@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/data/operation.dart';
 import 'package:money_tracker/providers/operation_provider.dart';
 import 'package:money_tracker/views/pages/op_page.dart';
 import 'package:provider/provider.dart';
 
 class OpListPage extends StatefulWidget {
-  OpListPage({super.key});
+  const OpListPage({super.key});
 
   @override
   State<OpListPage> createState() => _OpListPageState();

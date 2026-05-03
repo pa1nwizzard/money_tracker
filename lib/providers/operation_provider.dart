@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_tracker/data/operation.dart';
 
 class OperationProvider extends ChangeNotifier {
-  final List<Operation> _ops = [];
+  List<Operation> _ops = [];
 
   List<Operation> get ops => _ops;
 
@@ -16,5 +16,10 @@ class OperationProvider extends ChangeNotifier {
     _ops.removeAt(index);
     deleteOperation(index);
     notifyListeners();
+  }
+
+  Future<void> initDB() async {
+    _ops = await getOperations();
+    notifyListeners();    
   }
 }
