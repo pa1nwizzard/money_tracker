@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/data/operation.dart';
+import 'package:money_tracker/providers/operation_provider.dart';
 import 'package:money_tracker/views/widget_tree.dart';
 import 'package:money_tracker/views/widgets/my_radio_list_tile.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 
 class CreatorOpPage extends StatefulWidget {
@@ -15,28 +17,23 @@ class CreatorOpPage extends StatefulWidget {
 class _CreatorOpPageState extends State<CreatorOpPage> {
   final _controllerSum = TextEditingController();
   final _controllerCat = TextEditingController();
-  late List<Operation> ops;
+  //late List<Operation> ops = context.watch<OperationProvider>().ops;
 
-  void initState() {
+  /*void initState() {
     super.initState();
-    ops = [];
-    _loadOperations();
-  }
-
-  void _loadOperations() async{
-    ops = await getOperations();
-  }
+    ops = context.watch<OperationProvider>().ops;
+  }*/
 
   void _onCreateButtonPressed() {
-    insertOperation(
-      Operation(
-        id: ops.length,
-        type: _selectedType!,
-        category: _selectedCategory!,
-        count: _controllerSum.text == '' ? 0 : double.tryParse(_controllerSum.text)!,
-        date: DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()
-      )
-    );
+    Operation operation = Operation(
+                            id: Provider.of<OperationProvider>(context, listen: false).ops.length,
+                            type: _selectedType!,
+                            category: _selectedCategory!,
+                            count: _controllerSum.text == '' ? 0 : double.tryParse(_controllerSum.text)!,
+                            date: DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()
+                          );
+    insertOperation(operation);
+    Provider.of<OperationProvider>(context, listen: false).add(operation);
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute<void>(builder: (_) => WidgetTree()),

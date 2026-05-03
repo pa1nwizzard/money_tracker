@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:money_tracker/providers/operation_provider.dart';
 import 'package:money_tracker/views/widget_tree.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+// -- function to initialize the database --
 Future<Database> initDatabase() async {
   final path = join(
     await getDatabasesPath(),
@@ -24,7 +27,12 @@ final Future<Database> database = initDatabase();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => OperationProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {

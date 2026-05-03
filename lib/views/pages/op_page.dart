@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/data/operation.dart';
+import 'package:money_tracker/providers/operation_provider.dart';
 import 'package:money_tracker/views/widget_tree.dart';
+import 'package:provider/provider.dart';
 
 class OpPage extends StatelessWidget {
-  final Operation operation;
-  const OpPage({super.key, required this.operation});
+  final int index;
+  const OpPage({super.key, required this.index});
 
 
   @override
@@ -18,7 +19,7 @@ class OpPage extends StatelessWidget {
           size: 30
         ),
         title: Text(
-          'Data by ${operation.type}',
+          'Data by ${context.watch<OperationProvider>().ops[index].type}',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white
@@ -53,7 +54,7 @@ class OpPage extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 16),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text('${operation.date}')
+                      child: Text(context.watch<OperationProvider>().ops[index].date)
                     ),
                   ),
                   Padding(
@@ -75,7 +76,7 @@ class OpPage extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        '${operation.category}'
+                        context.watch<OperationProvider>().ops[index].category
                       ),
                     ),
                   ),
@@ -98,7 +99,7 @@ class OpPage extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        '${operation.count} rub.'
+                        '${context.watch<OperationProvider>().ops[index].count} rub.'
                       ),
                     ),
                   )
@@ -111,7 +112,7 @@ class OpPage extends StatelessWidget {
                 alignment: Alignment.topRight,
                 child: IconButton(
                   onPressed: () {
-                    deleteOperation(operation.id);
+                    Provider.of<OperationProvider>(context, listen: false).deleteOp(index);
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute<void>(
